@@ -1,0 +1,19 @@
+# -*- coding: utf-8 -*-f
+import codecs
+from openpyxl import Workbook
+# Define your item pipelines here
+#
+# Don't forget to add your pipeline to the ITEM_PIPELINES setting
+# See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
+
+
+class ZggkhcPipeline(object):
+    def __init__(self):
+        self.wb = Workbook()
+        self.ws = self.wb.active
+        self.ws.append(['流水号', '类别', '组套目录', '产品名称', '单位', '产地', '材质', '规格', '型号', '生产企业', '中标企业', '中标价格'])
+    def process_item(self, item, spider):
+        line = [item['serNum'], item['cateGory'], item['groupDir'], item['prducNam'], item['unit'],  item['addres'],  item['meterial'],  item['speciFication'],  item['model'],  item['producEnter'],  item['winPrud'],  item['price']]
+        self.ws.append(line)
+        self.wb.save('demo.xlsx')
+        return item

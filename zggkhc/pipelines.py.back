@@ -1,0 +1,50 @@
+# -*- coding: utf-8 -*-f
+import codecs
+from xlsxwriter import Workbook
+# Define your item pipelines here
+#
+# Don't forget to add your pipeline to the ITEM_PIPELINES setting
+# See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
+
+
+class ZggkhcPipeline(object):
+    def __init__(self):
+        #Create a Workbook add a Workbook
+        self.wb = Workbook('demo.xlsx')
+        self.ws = self.wb.add_worksheet()
+        #粗体显示第一行
+        bold = self.wb.add_format({'bold': 1})
+        self.ws.set_column(1, 1, 15)
+        #excel的标题
+        self.ws.write('A1', u'流水号', bold)
+        self.ws.write('B1', u'类别', bold)
+        self.ws.write('C1', u'组套目录', bold)
+        self.ws.write('D1', u'产品名称', bold)
+        self.ws.write('E1', u'单位', bold)
+        self.ws.write('F1', u'产地', bold)
+        self.ws.write('G1', u'材质', bold)
+        self.ws.write('H1', u'规格', bold)
+        self.ws.write('I1', u'型号', bold)
+        self.ws.write('J1', u'生产企业', bold)
+        self.ws.write('K1', u'中标企业', bold)
+        self.ws.write('L1', u'中标价格', bold)
+    def process_item(self, item, spider):
+        line = [item['serNum'], item['cateGory'], item['groupDir'], item['prducNam'], item['unit'],  item['addres'],  item['meterial'],  item['speciFication'],  item['model'],  item['producEnter'],  item['winPrud'],  item['price']]
+        print(line)
+        row = 1
+        col = 0
+        for serNum, cateGory, groupDir, prducNam, unit, addres, meterial, speciFication, model, producEnter, winPrud, price in (line):
+             self.ws.write_number(row, col, serNum)
+             self.ws.write_string(row, col + 1, cateGory)
+             self.ws.write_string(row. col + 2, groupDir )
+             self.ws.write_string(row, col + 3, prducNam)
+             self.ws.write_string(row, col + 4, unit)
+             self.ws.write_string(row, col + 5, addres)
+             self.ws.write_string(row, col + 6, meterial)
+             self.ws.write_string(row, col + 7, speciFication)
+             self.ws.write_string(row, col + 8, model)
+             self.ws.write_string(row, col + 9, producEnter)
+             self.ws.write_string(row. col + 10, winPrud)
+             self.ws.write_number(row, col + 11, price)
+             row += 1
+        self.wb.close()
